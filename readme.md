@@ -57,32 +57,16 @@ Pamiêtaj aby stworzyæ now¹ kolekcjê dla tego u¿ytkoników w bazie danych.
 
 Zwróæ szczegególn¹ uwagê na aby do warstwy API nie dosta³y siê modele domenowe!
 
-### Ocena 3.5: Implementacja regu³ biznesowych
+### Ocena 4.0: Implementacja regu³ biznesowych
 Stwórz nastêpuj¹ce regu³y biznesowe (np. `OrderMustHaveAtLeastOneProductRule`):
 1. Nazwa u¿ytkownika nie mo¿e byæ pusta i powinna sk³adaæ siê tylko z liter.
 2. £¹czny koszt produktów w zamówieniu nie mo¿e przekroczyæ 15000.
 
-### Ocena 4.5: Obs³uga koszyka produktów
+### Ocena 5.0: Obs³uga koszyka produktów
 Twoim zadaniem jest zaimplementowanie obs³ugi koszyka produktów.
-1. Stwórz nowy agregat do obs³ugi koszyka z produktami.
+1. Stwórz nowy agregat do obs³ugi koszyka z produktami (Tylko dodawanie nowych produktów do koszyka).
 2. Dodaj odpowiednie komendy (commands) i zapytania (queries) do zarz¹dzania koszykiem.
 3. Dodaj odpowiednie endpointy do API.
 4. Przerób implementacjê `Order`, aby by³a twrzona w za pomoc¹ nastêpuj¹cej metody `public static Order Create(CheckoutCart checkoutCart)`
 
-
 **Uwaga:** Utwórz now¹ kolekcjê dla tej funkcjonalnoœci w bazie danych.
-
-### Ocena 5.0: Integracja z innym projektem
-Za pomoc¹ Refit (https://github.com/reactiveui/refit) nawi¹¿ po³¹czenie z projektem z laboratorium 2, aby pobraæ informacje o produktach. Podczas integracji zwróæ uwagê na wykorzystanie kontenerów.
-
-Przyk³adowy interfejs do wykorzystania:
-
-```csharp
-public interface IProductsApi
-{
-    [Get("/products")]
-    Task<List<Product>> GetAllProductsAsync();
-}
-```
-
-Wykorzystaj zaimplementowany interfejs `IProductsApi` w klasie `ProductPriceDataApi`.
