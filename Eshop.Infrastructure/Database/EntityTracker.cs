@@ -1,15 +1,25 @@
-﻿using Eshop.Domain.SeedWork;
+using Eshop.Domain.SeedWork;
+
+namespace Eshop.Infrastructure.Database;
 
 internal class EntityTracker : IEntityTracker
 {
-    private readonly List<Entity> _trackedEntities = new List<Entity>();
+    private readonly List<Entity> _trackedEntities = [];
 
-    public void TrackEntity(Entity entity)
+    public void Track<T>(T entity) where T : Entity
     {
         _trackedEntities.Add(entity);
     }
-
-    public IEnumerable<Entity> GetTrackedEntities() => _trackedEntities.AsReadOnly();
-
-    public void ClearTrackedEntities() => _trackedEntities.Clear();
+    
+    public IReadOnlyList<Entity> Get()
+    {
+        return _trackedEntities;
+    }
+    
+    public T? Find<T>(Guid id) where T : Entity
+    {
+        return _trackedEntities.OfType<T>().FirstOrDefault(e => e.Id == id);
+    }
+    
+    public void Clear() => _trackedEntities.Clear();
 }

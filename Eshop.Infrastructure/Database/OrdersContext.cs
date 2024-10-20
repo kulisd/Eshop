@@ -1,18 +1,12 @@
-﻿using Eshop.Domain.Orders;
+﻿using Ardalis.GuardClauses;
+using Eshop.Domain.Orders;
 using MongoDB.Driver;
 
-namespace Eshop.Infrastructure.Database
+namespace Eshop.Infrastructure.Database;
+
+public sealed class OrdersContext(IMongoDatabase database)
 {
-    internal class OrdersContext
-    {
-        private readonly IMongoDatabase _database;        
+    private readonly IMongoDatabase _database = Guard.Against.Null(database, nameof(database));
 
-        public OrdersContext(MongoDbSettings settings)
-        {
-            var client = new MongoClient(settings.ConnectionString);
-            _database = client.GetDatabase(settings.DatabaseName);
-        }
-
-        public IMongoCollection<Order> Orders => _database.GetCollection<Order>(nameof(Orders));
-    }
+    public IMongoCollection<Order> Orders => _database.GetCollection<Order>("Orders");
 }

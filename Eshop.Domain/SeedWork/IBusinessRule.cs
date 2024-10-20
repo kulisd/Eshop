@@ -1,9 +1,8 @@
-﻿namespace Eshop.Domain.SeedWork
-{
-    public interface IBusinessRule
-    {
-        bool IsBroken();
+﻿namespace Eshop.Domain.SeedWork;
 
-        string Message { get; }
-    }
+public interface IBusinessRule
+{
+    bool IsBroken();
+
+    string Message { get; }
 }

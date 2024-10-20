@@ -1,38 +1,35 @@
-﻿using Eshop.Domain.Orders;
+﻿using Ardalis.GuardClauses;
+using Eshop.Domain.Orders;
 using Eshop.Infrastructure.Database;
-using Microsoft.EntityFrameworkCore;
+using Eshop.Infrastructure.Exceptions;
 using MongoDB.Driver;
 
-namespace Eshop.Infrastructure.Repositories
+namespace Eshop.Infrastructure.Repositories;
+
+internal class OrderRepository(OrdersContext context, IEntityTracker entityTracker) : IOrderRepository
 {
-    internal class OrderRepository : IOrderRepository
+    private readonly OrdersContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly IEntityTracker _entityTracker = entityTracker ?? throw new ArgumentNullException(nameof(entityTracker));
+
+    public void Add(Order order)
     {
-        private readonly OrdersContext _context;
-        private readonly IEntityTracker _entityTracker;
+        Guard.Against.Null(order, nameof(order), "Order is required.");
+        _entityTracker.Track(order);
+    }
 
-        public OrderRepository(OrdersContext context, IEntityTracker entityTracker)
+    public async Task<Order> GetByIdAsync(Guid id)
+    {
+        var order = _entityTracker.Find<Order>(id);
+        if (order != null) return order;
+            
+        order = await _context.Orders.Find(c => c.Id == id).FirstOrDefaultAsync();
+            
+        if (order == null)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _entityTracker = entityTracker ?? throw new ArgumentNullException(nameof(entityTracker));
+            throw new OrderNotExistsException(id);
         }
+        _entityTracker.Track(order);
 
-        public void Add(Order order)
-        {
-            _entityTracker.TrackEntity(order);
-        }
-
-        public async Task<Order> GetByIdAsync(Guid id)
-        {
-            var order = await _context.Orders.Find(c => c.Id == id).FirstAsync();
-
-            if(order == null)
-            {
-                throw new OrderNotExistsException(id);
-            }
-
-            _entityTracker.TrackEntity(order);
-
-            return order;
-        }
+        return order;
     }
 }

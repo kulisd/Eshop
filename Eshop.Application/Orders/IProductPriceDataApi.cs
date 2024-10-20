@@ -1,9 +1,8 @@
 ﻿using Eshop.Domain.Products;
 
-namespace Eshop.Domain.Orders
+namespace Eshop.Application.Orders;
+
+public interface IProductPriceDataApi
 {
-    public interface IProductPriceDataApi
-    {
-        Task<List<ProductPriceData>> Get();
-    }
+    Task<List<ProductPriceData>> Get();
 }
