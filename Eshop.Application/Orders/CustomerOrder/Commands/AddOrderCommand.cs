@@ -1,20 +1,13 @@
 ﻿using Eshop.Application.Configuration.Commands;
-using Eshop.Application.Shared;
+using Eshop.Contracts.Shared;
 
-namespace Eshop.Application.Orders.CustomerOrder.Commands
+namespace Eshop.Application.Orders.CustomerOrder.Commands;
+
+public class AddOrderCommand(
+    Guid customerId,
+    List<ProductDto> products) : CommandBase<Guid>
 {
-    public class AddOrderCommand : CommandBase<Guid>
-    {
-        public Guid CustomerId { get; }
+    public Guid CustomerId { get; } = customerId;
 
-        public List<ProductDto> Products { get; }
-
-        public AddOrderCommand(
-            Guid customerId,
-            List<ProductDto> products)
-        {
-            CustomerId = customerId;
-            Products = products ?? throw new ArgumentNullException(nameof(products));
-        }
-    }
+    public List<ProductDto> Products { get; } = products ?? throw new ArgumentNullException(nameof(products));
 }

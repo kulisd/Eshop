@@ -1,22 +1,18 @@
 ﻿using Eshop.Domain.SeedWork;
 
-namespace Eshop.Domain.Shared
+namespace Eshop.Domain.Customers;
+
+public class Customer : Entity, IAggregateRoot
 {
-    public class Customer : Entity, IAggregateRoot
-    {
-        public Guid Id { get; } 
-
-        public string Name { get; }    
+    public string Name { get; }    
         
-        public static Customer Create(Guid id, string name)
-        {
-            return new(id, name);
-        }
+    public static Customer Create(Guid id, string name)
+    {
+        return new(id, name);
+    }
 
-        private Customer(Guid id, string name)
-        {
-            Id = id;
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-        }
+    private Customer(Guid id, string name) : base(Guid.NewGuid())
+    {
+        Name = name ?? throw new ArgumentNullException(nameof(name));
     }
 }

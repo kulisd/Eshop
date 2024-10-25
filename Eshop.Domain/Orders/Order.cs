@@ -2,45 +2,50 @@
 using Eshop.Domain.Orders.Rules;
 using Eshop.Domain.Products;
 using Eshop.Domain.SeedWork;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace Eshop.Domain.Orders
+namespace Eshop.Domain.Orders;
+
+public class Order : Entity, IAggregateRoot
 {
-    public class Order : Entity, IAggregateRoot
+    [BsonRepresentation(BsonType.String)]
+    public Guid CustomerId { get; private set; }
+
+    public List<OrderProduct> Products { get; private set; }
+
+    private Order(Guid id, Guid customerId, List<OrderProduct> orderProducts) : base(id)
     {
-        public Guid Id { get; private set; }
+        CustomerId = customerId;
+        Products = orderProducts ?? throw new ArgumentNullException(nameof(orderProducts));
+    }
+    
+    private Order(Guid customerId, List<OrderProduct> orderProducts) : base(Guid.NewGuid())
+    {
+        CustomerId = customerId;
+        Products = orderProducts ?? throw new ArgumentNullException(nameof(orderProducts));
 
-        public Guid CustomerId { get; private set; }
+        AddDomainEvent(new OrderAddedEvent(Id, customerId));
+    }
 
-        public List<OrderProduct> Products { get; private set; }
+    public static Order Create(
+        Guid customerId,
+        List<OrderProductData> orderProductsData,
+        List<ProductPriceData> allProductPriceData)
+    {
+        List<OrderProduct> orderProducts = [];
 
-        private Order(Guid customerId, List<OrderProduct> orderProducts)
+        foreach (var orderProductData in orderProductsData)
         {
-            Id = Guid.NewGuid();
-            CustomerId = customerId;
-            Products = orderProducts ?? throw new ArgumentNullException(nameof(orderProducts));
+            var productPriceData = allProductPriceData.First(x => x.ProductId == orderProductData.ProductId);
 
-            AddDomainEvent(new OrderAddedEvent(Id, customerId));
+            var orderProduct = OrderProduct.Create(orderProductData.ProductId, orderProductData.Quantity, productPriceData.UnitPrice);
+
+            orderProducts.Add(orderProduct);
         }
 
-        public static Order Create(
-            Guid customerId,
-            List<OrderProductData> orderProductsData,
-            List<ProductPriceData> allProductPriceDatas)
-        {
-            List<OrderProduct> orderProducts = new();
+        CheckRule(new OrderMustHaveAtLeastOneProductRule(orderProducts));
 
-            foreach (var orderProductData in orderProductsData)
-            {
-                var productPriceData = allProductPriceDatas.First(x => x.ProductId == orderProductData.ProductId);
-
-                var orderProduct = OrderProduct.Create(orderProductData.ProductId, orderProductData.Quantity, productPriceData.UnitPrice);
-
-                orderProducts.Add(orderProduct);
-            }
-
-            CheckRule(new OrderMustHaveAtLeastOneProductRule(orderProducts));
-
-            return new Order(customerId, orderProducts);
-        }
+        return new Order(customerId, orderProducts);
     }
 }

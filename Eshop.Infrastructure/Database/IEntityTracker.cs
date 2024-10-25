@@ -1,10 +1,13 @@
-﻿using Eshop.Domain.SeedWork;
+using Eshop.Domain.SeedWork;
+
+namespace Eshop.Infrastructure.Database;
 
 internal interface IEntityTracker
 {
-    void ClearTrackedEntities();
+    void Clear();
 
-    IEnumerable<Entity> GetTrackedEntities();
+    IReadOnlyList<Entity> Get();
+    T? Find<T>(Guid id) where T : Entity;
 
-    void TrackEntity(Entity entity);
+    void Track<T>(T entity) where T : Entity; 
 }

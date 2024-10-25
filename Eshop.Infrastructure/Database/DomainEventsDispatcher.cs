@@ -1,14 +1,11 @@
 ﻿using Eshop.Domain.SeedWork;
 using MediatR;
 
-internal class DomainEventsDispatcher : IDomainEventsDispatcher
-{
-    private readonly IMediator _mediator;
+namespace Eshop.Infrastructure.Database;
 
-    public DomainEventsDispatcher(IMediator mediator)
-    {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-    }
+internal class DomainEventsDispatcher(IMediator mediator) : IDomainEventsDispatcher
+{
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     public async Task DispatchEventsAsync(IEnumerable<Entity> entities)
     {

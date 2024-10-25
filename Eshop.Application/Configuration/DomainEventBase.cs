@@ -1,12 +1,8 @@
-﻿namespace Eshop.Domain.SeedWork
-{
-    public class DomainEventBase : IDomainEvent
-    {
-        public DomainEventBase()
-        {
-            OccurredOn = DateTime.Now;
-        }
+﻿using Eshop.Domain.SeedWork;
 
-        public DateTime OccurredOn { get; }
-    }
+namespace Eshop.Application.Configuration;
+
+public class DomainEventBase : IDomainEvent
+{
+    public DateTime OccurredOn { get; } = DateTime.Now;
 }

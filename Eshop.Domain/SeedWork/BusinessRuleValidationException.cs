@@ -1,20 +1,13 @@
-﻿namespace Eshop.Domain.SeedWork
+﻿namespace Eshop.Domain.SeedWork;
+
+public class BusinessRuleValidationException(IBusinessRule brokenRule) : Exception("Violation of a business rule.")
 {
-    public class BusinessRuleValidationException : Exception
+    private IBusinessRule BrokenRule { get; } = brokenRule;
+
+    public string Details { get; } = brokenRule.Message;
+
+    public override string ToString()
     {
-        public IBusinessRule BrokenRule { get; }
-
-        public string Details { get; }
-
-        public BusinessRuleValidationException(IBusinessRule brokenRule) : base(brokenRule.Message)
-        {
-            BrokenRule = brokenRule;
-            Details = brokenRule.Message;
-        }
-
-        public override string ToString()
-        {
-            return $"{BrokenRule.GetType().FullName}: {BrokenRule.Message}";
-        }
+        return $"{BrokenRule.GetType().FullName}: {BrokenRule.Message}";
     }
 }

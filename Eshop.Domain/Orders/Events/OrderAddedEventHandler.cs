@@ -1,5 +1,6 @@
-﻿using Eshop.Domain.Orders.Events;
-using MediatR;
+﻿using MediatR;
+
+namespace Eshop.Domain.Orders.Events;
 
 internal class OrderAddedEventHandler : INotificationHandler<OrderAddedEvent>
 {

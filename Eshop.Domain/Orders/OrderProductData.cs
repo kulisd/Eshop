@@ -1,20 +1,19 @@
-﻿namespace Eshop.Domain.Orders
+﻿namespace Eshop.Domain.Orders;
+
+public class OrderProductData
 {
-    public class OrderProductData
+    private OrderProductData()
     {
-        private OrderProductData()
-        {
 
-        }
-
-        public OrderProductData(Guid productId, int quantity)
-        {
-            ProductId = productId;
-            Quantity = quantity;
-        }
-
-        public Guid ProductId { get; private set; }
-
-        public int Quantity { get; private set; }
     }
+
+    public OrderProductData(Guid productId, int quantity)
+    {
+        ProductId = productId;
+        Quantity = quantity;
+    }
+
+    public Guid ProductId { get; private set; }
+
+    public int Quantity { get; private set; }
 }

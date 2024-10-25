@@ -1,16 +1,9 @@
 ﻿using Eshop.Application.Configuration.Queries;
-using Eshop.Application.Shared;
+using Eshop.Contracts.Shared;
 
-namespace Eshop.Application.Orders.CustomerOrder.Queries
+namespace Eshop.Application.Orders.CustomerOrder.Queries;
+
+public class GetOrderQuery(Guid orderId) : IQuery<OrderDto>
 {
-    public class GetOrderQuery : IQuery<OrderDto>
-    {
-        public Guid OrderId { get; }
-
-        public GetOrderQuery(
-            Guid orderId)
-        {
-            OrderId = orderId;
-        }
-    }
+    public Guid OrderId { get; } = orderId;
 }

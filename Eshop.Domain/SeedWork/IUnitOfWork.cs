@@ -1,7 +1,6 @@
-﻿namespace Eshop.Domain.SeedWork
+﻿namespace Eshop.Domain.SeedWork;
+
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        Task<int> CommitAsync(CancellationToken cancellationToken = default);
-    }
+    Task CommitAsync(CancellationToken cancellationToken = default);
 }

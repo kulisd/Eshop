@@ -1,32 +1,19 @@
-﻿namespace Eshop.Application.Configuration.Commands
+﻿namespace Eshop.Application.Configuration.Commands;
+
+public abstract class CommandBase(Guid id) : ICommand
 {
-    public abstract class CommandBase : ICommand
+    public Guid Id { get; } = id;
+
+    protected CommandBase() : this(Guid.NewGuid())
     {
-        public Guid Id { get; }
-
-        public CommandBase()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        protected CommandBase(Guid id)
-        {
-            Id = id;
-        }
     }
+}
 
-    public abstract class CommandBase<TResult> : ICommand<TResult>
+public abstract class CommandBase<TResult>(Guid id) : ICommand<TResult>
+{
+    public Guid Id { get; } = id;
+
+    protected CommandBase() : this(Guid.NewGuid())
     {
-        public Guid Id { get; }
-
-        protected CommandBase()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        protected CommandBase(Guid id)
-        {
-            Id = id;
-        }
     }
 }
