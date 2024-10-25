@@ -1,88 +1,72 @@
 # Laboratorium 5: Wprowadzenie do Domain Driven Design (DDD) oraz Command Query Responsibility Segregation (CQRS)
 
 ## Cel zadania
-Celem tego laboratorium jest praktyczne zapoznanie siê z kluczowymi aspektami Domain Driven Design (DDD) oraz podstawami Command Query Responsibility Segregation (CQRS). Przed rozpoczêciem, zapoznaj siê z dostêpnym kodem. W razie pytañ, skontaktuj siê przez platformê Teams.
+Celem tego laboratorium jest praktyczne zapoznanie siÄ™ z kluczowymi aspektami Domain Driven Design (DDD) oraz podstawami Command Query Responsibility Segregation (CQRS). Przed rozpoczÄ™ciem, zapoznaj siÄ™ z dostÄ™pnym kodem. W razie pytaÅ„, skontaktuj siÄ™ przez platformÄ™ Teams.
 
-### Wskazówki:
-- Pamiêtaj o odpowiednim oddzieleniu warstwy domenowej, aplikacji oraz infrastruktury (w ramach uproszczenia w tym projekcie modele domeny oraz infrastruktury s¹ takie same).
-- Staraj siê trzymaæ zasad SOLID w trakcie projektowania klas.
-- Projekt uruchamia siê pod adresem http://localhost:8080
-- Do po³¹czenia z baz¹ danych mo¿esz u¿yæ narzêdzi takich jak Studio3T. Wymagany jest nastêpuj¹cy ci¹g po³¹czeniowy: `mongodb://root:example@eshop.mongodb:27017`.
-- Podczas instalacji Visual Studio upewnij siê, ¿e zainstalowa³eœ pakiet ASP.NET and web development.
-- Zachecam do stworzenia klona tego repozytorum, w przypadku potrzeby dodania poprawek z mojej strony bêdzie Pañstwu ³atwiej siê z nimi integrowaæ. 
-- Przyk³adowe zapytania
-    - POST /api/v1/customers/{customerId}/orders
-        - customerId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        - products id bazuje na `ProductPriceDataApi`
-        ```json
+### WskazÃ³wki:
+- Oddziel warstwy: domenowÄ…, aplikacji oraz infrastruktury. W tym projekcie, dla uproszczenia, modele domeny i infrastruktury sÄ… identyczne.
+- Staraj siÄ™ stosowaÄ‡ zasady SOLID przy projektowaniu klas.
+- Projekt uruchamia siÄ™ pod adresem `http://localhost:8080`.
+- Do poÅ‚Ä…czenia z bazÄ… danych uÅ¼yj narzÄ™dzia Studio3T. Wymagany connection string to: `mongodb://root:example@eshop.mongodb:27017`.
+- Podczas instalacji Visual Studio upewnij siÄ™, Å¼e masz pakiet ASP.NET and Web Development.
+- UtwÃ³rz klona tego repozytorium, co uÅ‚atwi integracjÄ™ ewentualnych poprawek.
+
+### PrzykÅ‚ady zapytaÅ„:
+- **Dodanie zamÃ³wienia** (POST /api/v1/customers/{customerId}/orders)
+    - `customerId`: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+    - Produkt `id` pochodzi z `ProductPriceDataApi`.
+    ```json
+    {
+      "products": [
         {
-          "products": [
-            {
-              "id": "514f6265-a9b8-46da-a31d-50f4f4c20911", 
-              "quantity": 1
-            }
-          ]
+          "id": "514f6265-a9b8-46da-a31d-50f4f4c20911", 
+          "quantity": 1
         }
-        ```
-    - POST /api/v1/customers/{customerId}/orders
-        - customerId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        - products id bazuje na `ProductPriceDataApi`
-        ```json
-        {
-          "products": [
-            {
-              "id": "514f6265-a9b8-46da-a31d-50f4f4c20911", 
-              "quantity": 1
-            },
-            {
-              "id": "514f6265-a9b8-46da-a31d-50f4f4c20912", 
-              "quantity": 2
-            }
-          ]
-        }
-        ```
-    - GET /api/v1/orders/{orderId}
-        - orderd: Wartoœæ zwrócona przez zapytanie POST
-        
-- Z powodów technicznych (serializacja) wszystkie w³aœciwoœci modeli domnenowych musz¹ mieæ settery i gettery np. `public Guid Id { get; private set; }`
+      ]
+    }
+    ```
+- **Pobranie zamÃ³wienia** (GET /api/v1/customers/{customerId}/orders/{orderId})
+    - `orderId`: WartoÅ›Ä‡ zwrÃ³cona przez zapytanie POST.
 
-### Ocena 3.5: Tworzenie nowych u¿ytkowników
-Twoim zadaniem jest zaimplementowanie funkcjonalnoœci tworzenia nowych u¿ytkowników przy u¿yciu agregatu `Customer`.
-1. Utwórz klasy `CreateCustomerCommand` i `GetCustomerQuery`.
-2. Zaimplementuj obs³ugê tych komend i zapytañ.
+**Uwaga:** Z powodÃ³w technicznych (serializacja) wszystkie wÅ‚aÅ›ciwoÅ›ci modeli domenowych muszÄ… mieÄ‡ settery i gettery, np. `public Guid Id { get; private set; }`.
+
+## Zadania do realizacji
+
+### Ocena 3: Tworzenie nowych uÅ¼ytkownikÃ³w
+Zaimplementuj funkcjonalnoÅ›Ä‡ tworzenia nowych uÅ¼ytkownikÃ³w przy uÅ¼yciu agregatu `Customer`.
+1. UtwÃ³rz klasy `CreateCustomerCommand` i `GetCustomerQuery`.
+2. Zaimplementuj obsÅ‚ugÄ™ tych komend i zapytaÅ„.
 3. Dodaj odpowiednie endpointy do API.
-4. Upewnij siê, ¿e po stworzeniu klienta generowane jest zdarzenie `CustomerCreatedEvent`.
+4. Po stworzeniu klienta wygeneruj zdarzenie `CustomerCreatedEvent`.
 
-Pamiêtaj aby stworzyæ now¹ kolekcjê dla tego u¿ytkoników w bazie danych. 
+**PamiÄ™taj:** UtwÃ³rz nowÄ… kolekcjÄ™ dla uÅ¼ytkownikÃ³w w bazie danych oraz upewnij siÄ™, Å¼e do warstwy API nie dostanÄ… siÄ™ modele domenowe.
 
-Zwróæ szczegególn¹ uwagê na aby do warstwy API nie dosta³y siê modele domenowe!
+### Ocena 3.5: Implementacja reguÅ‚ biznesowych
+StwÃ³rz nastÄ™pujÄ…ce reguÅ‚y biznesowe:
+1. Nazwa uÅ¼ytkownika nie moÅ¼e byÄ‡ pusta i powinna skÅ‚adaÄ‡ siÄ™ wyÅ‚Ä…cznie z liter.
+2. ÅÄ…czny koszt produktÃ³w w zamÃ³wieniu nie moÅ¼e przekroczyÄ‡ 15 000.
 
-### Ocena 3.5: Implementacja regu³ biznesowych
-Stwórz nastêpuj¹ce regu³y biznesowe (np. `OrderMustHaveAtLeastOneProductRule`):
-1. Nazwa u¿ytkownika nie mo¿e byæ pusta i powinna sk³adaæ siê tylko z liter.
-2. £¹czny koszt produktów w zamówieniu nie mo¿e przekroczyæ 15000.
+### Ocena 4: Implementacja obsÅ‚ugi bÅ‚Ä™dÃ³w oraz metryk
+Aby aplikacja byÅ‚a stabilniejsza i zapewniaÅ‚a odpowiedni monitoring, wprowadÅº:
+1. ObsÅ‚ugÄ™ bÅ‚Ä™dÃ³w za pomocÄ… dedykowanego middleware, ktÃ³ry przechwyci wyjÄ…tki i zwrÃ³ci przyjazne komunikaty.
+2. ObsÅ‚ugÄ™ metryk do monitorowania stabilnoÅ›ci systemu poprzez Å›ledzenie wystÄ…pieÅ„ bÅ‚Ä™dÃ³w.
 
-### Ocena 4.5: Obs³uga koszyka produktów
-Twoim zadaniem jest zaimplementowanie obs³ugi koszyka produktów.
-1. Stwórz nowy agregat do obs³ugi koszyka z produktami.
-2. Dodaj odpowiednie komendy (commands) i zapytania (queries) do zarz¹dzania koszykiem.
+#### ObsÅ‚uga bÅ‚Ä™dÃ³w:
+1. Rozszerz klasÄ™ `ErrorHandlingMiddleware`, odpowiedzialnÄ… za przechwytywanie wyjÄ…tkÃ³w.
+2. Middleware powinien zwracaÄ‡ informacjÄ™ z przyjaznym komunikatem bÅ‚Ä™du.
+
+#### ObsÅ‚uga metryk:
+1. StwÃ³rz `MetricsService`, ktÃ³ry bÄ™dzie odpowiedzialny za zliczanie bÅ‚Ä™dÃ³w.
+2. UdostÄ™pnij metryki pod adresem `/metrics`.
+
+### Ocena 5: ObsÅ‚uga koszyka produktÃ³w
+Zaimplementuj funkcjonalnoÅ›Ä‡ obsÅ‚ugi koszyka produktÃ³w.
+1. StwÃ³rz agregat do zarzÄ…dzania koszykiem produktÃ³w.
+2. Dodaj komendy (commands) i zapytania (queries) dla zarzÄ…dzania koszykiem:
+    - UmoÅ¼liw dodawanie produktÃ³w do koszyka.
+    - Opcjonalnie: moÅ¼liwoÅ›Ä‡ usuwania produktÃ³w z koszyka jest opcjonalna i moÅ¼e zostaÄ‡ pominiÄ™ta.
+    - Dodaj moÅ¼liwoÅ›Ä‡ pobierania zawartoÅ›ci koszyka.
 3. Dodaj odpowiednie endpointy do API.
-4. Przerób implementacjê `Order`, aby by³a twrzona w za pomoc¹ nastêpuj¹cej metody `public static Order Create(CheckoutCart checkoutCart)`
+4. ZmieÅ„ implementacjÄ™ `Order`, aby byÅ‚a tworzona za pomocÄ… metody `public static Order Create(CheckoutCart checkoutCart)`.
 
-
-**Uwaga:** Utwórz now¹ kolekcjê dla tej funkcjonalnoœci w bazie danych.
-
-### Ocena 5.0: Integracja z innym projektem
-Za pomoc¹ Refit (https://github.com/reactiveui/refit) nawi¹¿ po³¹czenie z projektem z laboratorium 2, aby pobraæ informacje o produktach. Podczas integracji zwróæ uwagê na wykorzystanie kontenerów.
-
-Przyk³adowy interfejs do wykorzystania:
-
-```csharp
-public interface IProductsApi
-{
-    [Get("/products")]
-    Task<List<Product>> GetAllProductsAsync();
-}
-```
-
-Wykorzystaj zaimplementowany interfejs `IProductsApi` w klasie `ProductPriceDataApi`.
+**Uwaga:** UtwÃ³rz nowÄ… kolekcjÄ™ dla koszyka produktÃ³w w bazie danych.
