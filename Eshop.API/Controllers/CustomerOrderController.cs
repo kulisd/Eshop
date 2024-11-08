@@ -35,8 +35,6 @@ public class CustomerOrderController(ISender sender) : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var orderId = await _sender.Send(new AddOrderCommand(customerId, request.Products), cancellationToken);
-        // TODO: Implement the response.
-        // return Created($"/api/v1/customers/{customerId}/orders/{orderId}", orderId);
-        return Created(string.Empty, orderId);
+        return Created($"api/v1/customers/{customerId}/orders/{orderId}", orderId);
     }
 }
