@@ -1,17 +1,20 @@
 ﻿using Eshop.Domain.SeedWork;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Eshop.Domain.Customers;
 
 public class Customer : Entity, IAggregateRoot
 {
-    public string Name { get; }    
+    [BsonRepresentation(BsonType.String)]
+    public string Name { get; private set; }    
         
-    public static Customer Create(Guid id, string name)
+    public static Customer Create(string name)
     {
-        return new(id, name);
+        return new(name);
     }
 
-    private Customer(Guid id, string name) : base(Guid.NewGuid())
+    private Customer(string name) : base(Guid.NewGuid())
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
     }
