@@ -7,7 +7,7 @@ Celem tego laboratorium jest praktyczne zapoznanie się z kluczowymi aspektami D
 - Oddziel warstwy: domenową, aplikacji oraz infrastruktury. W tym projekcie, dla uproszczenia, modele domeny i infrastruktury są identyczne.
 - Staraj się stosować zasady SOLID przy projektowaniu klas.
 - Projekt uruchamia się pod adresem `http://localhost:8080`.
-- Do połączenia z bazą danych użyj narzędzia Studio3T. Wymagany connection string to: `mongodb://root:example@eshop.mongodb:27017`.
+- Do połączenia z bazą danych użyj narzędzia Studio3T. Wymagany connection string to: `mongodb://root:example@localhost:27017`.
 - Podczas instalacji Visual Studio upewnij się, że masz pakiet ASP.NET and Web Development.
 - Utwórz klona tego repozytorium, co ułatwi integrację ewentualnych poprawek.
 
